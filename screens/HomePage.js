@@ -269,19 +269,19 @@ const styles = StyleSheet.create({
   statusTag: {
     fontSize: 12,
     color: '#fff',
-    backgroundColor: '#8B008B',
+    backgroundColor: '#016064',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 4,
   },
   playButton: {
-    backgroundColor: '#8B008B',
+    backgroundColor: '#016064',
     paddingHorizontal: 18,
     paddingVertical: 4,
     borderRadius: 20,
   },
   playButtonActive: {
-    backgroundColor: '#0056b3',
+    backgroundColor: '#757C88',
   },
   playButtonText: {
     color: '#fff',
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 20,
     paddingBottom: 10,
-    backgroundColor: '#8B008B',
+    backgroundColor: '#281E5D',
   },
   headerContent: {
     flexDirection: 'row',
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   logoutButton: {
     backgroundColor: '#fff',
     paddingHorizontal: 15,
-    paddingVertical: 8,
+    paddingVertical: 3,
     borderRadius: 20,
     elevation: 2,
     shadowColor: '#000',
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   logoutButtonText: {
-    color: '#8B008B',
+    color: '#281E5D',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -329,7 +329,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: '#8B008B',
+    backgroundColor: '#1F456E',
     borderRadius: 30,
     padding: 15,
     elevation: 5,
