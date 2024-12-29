@@ -34,24 +34,32 @@ const LoginPage = ({ navigation }) => {
   const formValues = watch();
 
   useEffect(() => {
-     // Check if user is already logged in
-     const checkLoginStatus = async () => {
+    // Check if user is already logged in
+    const checkLoginStatus = async () => {
       try {
-        const userData = await AsyncStorage.getItem('userData');
-        if (userData) {
-          const user = JSON.parse(userData);
-          navigation.replace('Home', { username: user.username });
+        const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+        
+        // If the user is logged in, navigate to the Home page
+        if (isLoggedIn === 'true') {
+          const userData = await AsyncStorage.getItem('userData');
+          
+          if (userData) {
+            const user = JSON.parse(userData);
+            // Navigate to Home page with the username as a parameter
+            navigation.replace('Home', { username: user.username });
+          }
         }
       } catch (error) {
         console.error('Error checking login status:', error);
       }
     };
-
+  
     checkLoginStatus();
+    
     return () => {
       // Cleanup if needed
     };
-  }, []);
+  }, [navigation]);
 
   const validatePassword = (password) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -116,7 +124,7 @@ const LoginPage = ({ navigation }) => {
       <Text style={styles.title}>Welcome Back!</Text>
 
       {/* Username Input */}
-      <Controller
+      {/* <Controller
         control={control}
         name="username"
         rules={{
@@ -138,7 +146,7 @@ const LoginPage = ({ navigation }) => {
       />
       {errors.username && (
         <Text style={styles.errorText}>{errors.username.message}</Text>
-      )}
+      )} */}
 
       {/* Email Input */}
       <Controller
