@@ -82,7 +82,7 @@ const RegisterPage = ({ navigation }) => {
         [
           {
             text: 'Continue to Login',
-            onPress: () => navigation.navigate('Login')
+            onPress: () => navigation.replace('Login')
           }
         ]
       );
