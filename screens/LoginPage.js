@@ -7,10 +7,13 @@ import {
   StyleSheet, 
   Alert, 
   Image,
-  ActivityIndicator 
-} from 'react-native';
+  ActivityIndicator,
+  Keyboard,
+  TouchableWithoutFeedback
+} from 'react-native';  
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const LoginPage = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -62,12 +65,11 @@ const LoginPage = ({ navigation }) => {
   }, [navigation]);
 
   const validatePassword = (password) => {
-    const hasUpperCase = /[A-Z]/.test(password);
+
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     
-    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
     if (!hasLowerCase) return "Password must contain at least one lowercase letter";
     if (!hasNumber) return "Password must contain at least one number";
     if (!hasSpecialChar) return "Password must contain at least one special character";
@@ -116,7 +118,14 @@ const LoginPage = ({ navigation }) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.container}>
+      <TouchableOpacity 
+                  onPress={() => navigation.navigate('Welcome')} 
+                  style={styles.arrowContainer}
+                >
+                  <Ionicons name="arrow-back" size={22} color="#fff" />
+      </TouchableOpacity>
       <Image
         source={require('../assets/headphones.jpg')}
         style={styles.logo}
@@ -181,8 +190,8 @@ const LoginPage = ({ navigation }) => {
         rules={{
           required: 'Password is required',
           minLength: {
-            value: 8,
-            message: 'Password must be at least 8 characters long'
+            value: 6,
+            message: 'Password must be at least 6 characters long'
           },
           validate: validatePassword
         }}
@@ -228,6 +237,7 @@ const LoginPage = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -247,12 +257,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginBottom: 20,
+    marginTop: 30,
     borderRadius: 200,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 100,
+    marginBottom: 150,
     color: '#f8f9fa',
   },
   input: {
@@ -275,6 +286,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  arrowContainer: {
+    marginRight: 'auto',
+    marginTop: -40,
+    alignItems: 'right',
   },
   buttonText: {
     color: '#fff',
