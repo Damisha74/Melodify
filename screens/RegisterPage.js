@@ -7,7 +7,9 @@ import {
   StyleSheet, 
   Alert, 
   Image,
-  ActivityIndicator 
+  ActivityIndicator,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -36,12 +38,11 @@ const RegisterPage = ({ navigation }) => {
   const password = watch('password');
 
   const validatePassword = (value) => {
-    const hasUpperCase = /[A-Z]/.test(value);
     const hasLowerCase = /[a-z]/.test(value);
     const hasNumber = /\d/.test(value);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
     
-    if (!hasUpperCase) return "Password must contain at least one uppercase letter";
+
     if (!hasLowerCase) return "Password must contain at least one lowercase letter";
     if (!hasNumber) return "Password must contain at least one number";
     if (!hasSpecialChar) return "Password must contain at least one special character";
@@ -82,7 +83,7 @@ const RegisterPage = ({ navigation }) => {
         [
           {
             text: 'Continue to Login',
-            onPress: () => navigation.replace('Login')
+            // onPress: () => navigation.replace('Login')
           }
         ]
       );
@@ -94,6 +95,7 @@ const RegisterPage = ({ navigation }) => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.container}>
       <Image
         source={require('../assets/headphones.jpg')}
@@ -153,8 +155,8 @@ const RegisterPage = ({ navigation }) => {
         rules={{
           required: 'Password is required',
           minLength: {
-            value: 8,
-            message: 'Password must be at least 8 characters long'
+            value: 6,
+            message: 'Password must be at least 6 characters long'
           },
           validate: validatePassword
         }}
@@ -230,6 +232,7 @@ const RegisterPage = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -247,12 +250,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     marginBottom: 20,
+    marginTop: 60,
     borderRadius: 200,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 100,
+    marginBottom: 110,
     color: '#f8f9fa',
   },
   passwordContainer: {
