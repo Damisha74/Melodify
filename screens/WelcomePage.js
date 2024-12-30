@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, ImageBackground, StatusBar } from 'react-native';
+import { View, Text, Button, TouchableOpacity, StyleSheet, ImageBackground, StatusBar} from 'react-native';
 
 
 const WelcomePage = ({ navigation }) => {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
       fontSize: 24,
       color: '#ffffff', // White text for readability on dark backgrounds
       marginBottom: 20,
-      marginTop: 100,
+      marginTop: 250,
       fontWeight: 'bold',
     },
     introText: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
       width: '80%',          // Set the width to 80% of the parent container
-      marginTop: 20,         // Optional: space between the text and the button
+      marginTop: 100,         // Optional: space between the text and the button
       borderRadius: 5,       // Optional: rounded corners for the button
       overflow: 'hidden',    // Optional: to make the button's border radius effective
     },
