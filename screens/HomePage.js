@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Image, TouchableOpacity,TextInput} from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
@@ -17,7 +17,8 @@ export default function HomePage() {
   const [currentTrackId, setCurrentTrackId] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const { clickCount, incrementClickCount , resetClickCount } = useClickCount();
-
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredTracks, setFilteredTracks] = useState([]);
   // Add logout handler
   const handleLogout = async () => {
     try {
@@ -26,7 +27,12 @@ export default function HomePage() {
         await sound.unloadAsync();
       }
       // Clear user data
-      await AsyncStorage.clear();
+      // await AsyncStorage.clear();
+      // Remove only specific user-related data
+    await AsyncStorage.removeItem('username');  // Or any key you used to store user info
+    await AsyncStorage.removeItem('userToken'); // Example if you store a token
+    await AsyncStorage.removeItem('isLoggedIn'); // Remove the login status flag
+
       // Reset click count
     resetClickCount();
       // Navigate to Login
@@ -56,6 +62,19 @@ export default function HomePage() {
 
     fetchTracks();
   }, []);
+
+  // Filter tracks based on search query
+  useEffect(() => {
+    if (searchQuery === '') {
+      setFilteredTracks(tracks);  // If no search query, display all tracks
+    } else {
+      const filtered = tracks.filter((track) =>
+        track.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        track.artist.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredTracks(filtered);
+    }
+  }, [searchQuery, tracks]);
 
   // Cleanup sound on unmount
   useEffect(() => {
@@ -146,6 +165,7 @@ export default function HomePage() {
   );
 
   return (
+    
     <View style={styles.container}>
     <View style={styles.header}>
       <View style={styles.headerContent}>
@@ -170,6 +190,22 @@ export default function HomePage() {
       </View>
     </View>
 
+   {/* Search Bar with Icon */}
+   <View style={styles.searchContainer}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search for songs or artists"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        {searchQuery ? (
+          <TouchableOpacity onPress={() => setSearchQuery('')} style={styles.clearButton}>
+            <Ionicons name="close" size={20} color="#777" />
+          </TouchableOpacity>
+        ) : (
+          <Ionicons name="search" size={20} color="#777" style={styles.searchIcon} />
+        )}
+      </View>
 
       {loading ? (
         <View style={styles.loadingContainer}>
@@ -178,7 +214,7 @@ export default function HomePage() {
         </View>
       ) : (
         <FlatList
-          data={tracks}
+          data={filteredTracks}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.list}
@@ -338,5 +374,33 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    margin: 10,
+    marginBottom: 0,
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    paddingVertical: 0,
+    elevation: 3,  // Android shadow effect
+    shadowColor: '#000', // iOS shadow effect
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  searchInput: {
+    flex: 1,
+    height: 40,
+    paddingLeft: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  clearButton: {
+    padding: 5,
   },
 });
